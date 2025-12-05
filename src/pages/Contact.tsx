@@ -22,7 +22,7 @@ const Contact = () => {
     preferredTime: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic validation
@@ -35,21 +35,45 @@ const Contact = () => {
       return;
     }
 
-    // In a real application, this would send data to a server
-    toast({
-      title: "Assessment Request Received!",
-      description: "We'll contact you within 24 hours to schedule your appointment.",
-    });
+    // Google Form submission
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/DEMO_FORM_ID/formResponse";
+    
+    const formBody = new FormData();
+    formBody.append("entry.111111111", formData.name);
+    formBody.append("entry.222222222", formData.phone);
+    formBody.append("entry.333333333", formData.email);
+    formBody.append("entry.444444444", formData.childAge);
+    formBody.append("entry.555555555", formData.concern);
+    formBody.append("entry.666666666", formData.preferredTime);
 
-    // Reset form
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      childAge: "",
-      concern: "",
-      preferredTime: ""
-    });
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formBody
+      });
+
+      toast({
+        title: "Assessment Request Received!",
+        description: "We'll contact you within 24 hours to schedule your appointment.",
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        childAge: "",
+        concern: "",
+        preferredTime: ""
+      });
+    } catch (error) {
+      toast({
+        title: "Submission Error",
+        description: "Something went wrong. Please try again or call us directly.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
