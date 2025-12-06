@@ -7,12 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -35,44 +36,53 @@ const Contact = () => {
       return;
     }
 
-    // Google Form submission
-    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/DEMO_FORM_ID/formResponse";
-    
-    const formBody = new FormData();
-    formBody.append("entry.111111111", formData.name);
-    formBody.append("entry.222222222", formData.phone);
-    formBody.append("entry.333333333", formData.email);
-    formBody.append("entry.444444444", formData.childAge);
-    formBody.append("entry.555555555", formData.concern);
-    formBody.append("entry.666666666", formData.preferredTime);
+    setIsSubmitting(true);
 
     try {
-      await fetch(GOOGLE_FORM_URL, {
+      // Create FormData for Web3Forms
+      const formDataToSend = new FormData();
+      formDataToSend.append("access_key", "23cb80b0-74ef-4fe8-ab8c-08621eccdacb");
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("Child Age", formData.childAge);
+      formDataToSend.append("Therapy Concern", formData.concern);
+      formDataToSend.append("Preferred Time", formData.preferredTime);
+      formDataToSend.append("subject", "New Assessment Request - RIITS CDC");
+
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        mode: "no-cors",
-        body: formBody
+        body: formDataToSend
       });
 
-      toast({
-        title: "Assessment Request Received!",
-        description: "We'll contact you within 24 hours to schedule your appointment.",
-      });
+      const result = await response.json();
 
-      // Reset form
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        childAge: "",
-        concern: "",
-        preferredTime: ""
-      });
+      if (result.success) {
+        toast({
+          title: "Assessment Request Received!",
+          description: "We'll contact you within 24 hours to schedule your appointment.",
+        });
+
+        // Reset form
+        setFormData({
+          name: "",
+          phone: "",
+          email: "",
+          childAge: "",
+          concern: "",
+          preferredTime: ""
+        });
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
     } catch (error) {
       toast({
         title: "Submission Error",
         description: "Something went wrong. Please try again or call us directly.",
         variant: "destructive"
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -248,8 +258,14 @@ const Contact = () => {
                       </Select>
                     </div>
 
-                    <Button type="submit" variant="cta" size="lg" className="w-full">
-                      Submit Assessment Request
+                    <Button 
+                      type="submit" 
+                      variant="cta" 
+                      size="lg" 
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Submitting...' : 'Submit Assessment Request'}
                     </Button>
                   </form>
                 </CardContent>
