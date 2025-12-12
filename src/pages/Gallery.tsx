@@ -2,7 +2,6 @@ import Layout from "@/components/layout/Layout";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 
-import heroImg from "@/assets/hero-children.jpg";
 import speechImg from "@/assets/speech-therapy.jpg";
 import otImg from "@/assets/occupational-therapy.jpg";
 import behaviourImg from "@/assets/behaviour-therapy.jpg";
@@ -13,7 +12,6 @@ import groupImg from "@/assets/group-therapy.jpg";
 import stepImg from "@/assets/step-school.jpg";
 
 const galleryImages = [
-  { src: heroImg, alt: "Happy children learning together", caption: "Learning Together" },
   { src: speechImg, alt: "Speech therapy session", caption: "Speech Therapy" },
   { src: otImg, alt: "Occupational therapy activities", caption: "Occupational Therapy" },
   { src: behaviourImg, alt: "Behavior therapy session", caption: "Behaviour Therapy" },
