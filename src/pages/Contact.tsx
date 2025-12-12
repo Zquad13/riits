@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Phone, Clock } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import stepSchoolImage from "@/assets/step-school.jpg";
+import stepSchoolImage from "@/assets/Building.jpg";
 
 const Contact = () => {
   const { toast } = useToast();
