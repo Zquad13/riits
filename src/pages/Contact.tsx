@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MapPin, Phone, Clock } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import stepSchoolImage from "@/assets/step-school.jpg";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -113,6 +114,23 @@ const Contact = () => {
       {/* Contact Info & Form */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* School Image */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="max-w-6xl mx-auto mb-12"
+          >
+            <div className="w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src={stepSchoolImage}
+                alt="RIITS Child Development Centre building"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Information */}
             <motion.div
