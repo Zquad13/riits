@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroImage from "@/assets/step-school.jpg";
+import heroImage from "@/assets/hero-children.jpg";
 
 const HeroSection = () => {
   return (
